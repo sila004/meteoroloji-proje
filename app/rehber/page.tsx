@@ -203,15 +203,13 @@ export default function RehberPage() {
             </p>
 
             <h2>
-              Hava Durumunu
-              <span> Daha İyi Anla.</span>
+              Hava Durumu Rehberim 
+              <span> </span>
             </h2>
 
             <p>
-              Günlük hava tahminlerinde karşılaştığın
-              kavramların ne anlama geldiğini öğren.
-              Meteoroloji hakkında temel bilgileri
-              tek bir yerde incele.
+              
+              Meteoroloji hakkında temel bilgiler ve sıkça sorulan sorular.
             </p>
           </div>
 

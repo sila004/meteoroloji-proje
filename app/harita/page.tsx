@@ -53,10 +53,10 @@ export default function Harita() {
     }
   }
 
-  const minLon = 25;
+  const minLon = 25.4;
   const maxLon = 45;
-  const minLat = 35;
-  const maxLat = 43;
+  const minLat = 35.5;
+  const maxLat = 42.5;
 
   return (
     <main className="harita-page">
@@ -92,9 +92,10 @@ export default function Harita() {
 
           <div className="harita-glass">
             <div className="harita-map">
-              <span className="harita-map-label">
-                TÜRKİYE
-              </span>
+            <div
+             className="harita-turkiye-siluet"
+             aria-hidden="true"
+            />
 
               {cities.map((city, index) => {
                 const left =
