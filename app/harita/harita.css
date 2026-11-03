@@ -1,0 +1,431 @@
+
+.harita-page {
+  min-height: 100vh;
+  padding: 0 36px 60px;
+  background:
+    radial-gradient(
+      ellipse at 8% 20%,
+      rgba(114, 163, 213, 0.55),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 92% 48%,
+      rgba(160, 145, 202, 0.4),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 35% 95%,
+      rgba(127, 184, 181, 0.35),
+      transparent 50%
+    ),
+    #dce5ef;
+
+  color: #192b47;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.harita-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.harita-heading {
+  padding: 48px 0 36px;
+}
+
+.harita-eyebrow {
+  margin: 0 0 12px;
+  color: #617795;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.harita-heading h1 {
+  margin: 0;
+  color: #192b47;
+  font-size: clamp(28px, 3.5vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+}
+
+.harita-subtitle {
+  max-width: 680px;
+  margin: 15px 0 0;
+  color: #66778f;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.harita-section {
+  margin-top: 30px;
+}
+
+.harita-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.harita-section-heading h2 {
+  margin: 0;
+  color: #192b47;
+  font-size: 25px;
+  letter-spacing: -0.8px;
+}
+
+.harita-count {
+  color: #697b94;
+  font-size: 12px;
+}
+
+.harita-glass,
+.harita-metric {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.38),
+    rgba(255, 255, 255, 0.08)
+  );
+
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    0 8px 24px rgba(40, 64, 99, 0.08);
+}
+
+.harita-glass {
+  padding: 22px;
+  border-radius: 24px;
+}
+
+.harita-map {
+  position: relative;
+  height: 430px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 18px;
+
+  background:
+    radial-gradient(
+      ellipse at 30% 35%,
+      rgba(114, 163, 213, 0.3),
+      transparent 60%
+    ),
+    rgba(220, 229, 239, 0.35);
+}
+
+.harita-map-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(47, 116, 183, 0.08);
+  font-size: clamp(45px, 8vw, 100px);
+  font-weight: 800;
+  letter-spacing: 10px;
+  pointer-events: none;
+}
+
+.harita-pin {
+  position: absolute;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transform: translate(-50%, -50%);
+  padding: 8px 11px;
+  border: 1px solid rgba(134, 169, 216, 0.6);
+  border-radius: 10px;
+  background: rgba(237, 245, 255, 0.85);
+  color: #294e7f;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(40, 64, 99, 0.1);
+  transition: background 200ms ease;
+}
+
+.harita-pin:hover {
+  z-index: 3;
+  background: #c7ddf6;
+}
+
+.harita-pin-active {
+  z-index: 2;
+  background: #243f70;
+  color: white;
+  border-color: #243f70;
+}
+
+.harita-pin-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #6d9bcf;
+}
+
+.harita-pin-active .harita-pin-dot {
+  background: #b8e4d2;
+}
+
+.harita-map-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 4px 2px;
+  color: #697b94;
+  font-size: 12px;
+}
+
+.harita-map-bottom strong {
+  color: #294e7f;
+}
+
+.harita-weather {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 34px 0;
+  border-radius: 24px;
+  background: linear-gradient(120deg, #243f70, #527cb1);
+  color: white;
+  box-shadow:
+    0 10px 28px rgba(36, 63, 112, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.harita-orbit {
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  right: -30px;
+  top: -85px;
+  border: 1px solid #ffffff12;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.harita-orbit-two {
+  width: 570px;
+  height: 570px;
+  right: -95px;
+  top: -150px;
+}
+
+.harita-weather-top,
+.harita-weather-body,
+.harita-weather-bottom {
+  position: relative;
+  z-index: 1;
+}
+
+.harita-weather-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.harita-live {
+  padding: 8px 12px;
+  border: 1px solid #ffffff28;
+  border-radius: 30px;
+  background: #ffffff0d;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.harita-weather-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 260px;
+}
+
+.harita-temperature {
+  display: flex;
+  align-items: flex-start;
+  font-size: clamp(76px, 9vw, 112px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -6px;
+}
+
+.harita-temperature span {
+  margin: 14px 0 0 8px;
+  color: #dfe9f5;
+  font-size: 29px;
+  letter-spacing: -1px;
+}
+
+.harita-weather-body h3 {
+  margin: 8px 0 0;
+  color: white;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.harita-weather-body p {
+  color: #dce6f1;
+  font-size: 12px;
+}
+
+.harita-weather-symbol {
+  font-size: 110px;
+  animation: harita-float 5s ease-in-out infinite;
+}
+
+.harita-weather-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 18px 0;
+  border-top: 1px solid #ffffff23;
+  color: #d0dfed;
+  font-size: 12px;
+}
+
+.harita-status {
+  position: relative;
+  z-index: 1;
+  padding: 60px 0;
+  color: #eef5fc;
+}
+
+.harita-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.harita-metric {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 160px;
+  padding: 22px;
+  border-radius: 16px;
+  transition: transform 220ms ease;
+}
+
+.harita-metric:hover {
+  transform: translateY(-3px);
+  background: rgba(151, 182, 222, 0.46);
+}
+
+.harita-metric > span {
+  color: #697b94;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.harita-metric strong {
+  margin: 20px 0 10px;
+  color: #192b47;
+  font-size: 27px;
+  font-weight: 600;
+}
+
+.harita-metric small {
+  color: #74849a;
+  font-size: 11px;
+}
+
+.harita-footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 45px;
+  padding: 30px 0;
+  border-top: 1px solid #d5dde7;
+  color: #74849a;
+  font-size: 11px;
+}
+
+.harita-footer strong {
+  color: #617592;
+  letter-spacing: 1.5px;
+}
+
+@keyframes harita-float {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 900px) {
+  .harita-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .harita-page {
+    padding: 0 16px 40px;
+  }
+
+  .harita-heading {
+    padding: 30px 0;
+  }
+
+  .harita-glass {
+    padding: 10px;
+  }
+
+  .harita-map {
+    height: 380px;
+  }
+
+  .harita-pin {
+    padding: 5px 6px;
+    font-size: 10px;
+  }
+
+  .harita-weather {
+    padding: 24px 22px 0;
+  }
+
+  .harita-weather-symbol {
+    font-size: 65px;
+  }
+
+  .harita-weather-bottom {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 520px) {
+  .harita-metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .harita-metric {
+    padding: 16px;
+    min-height: 140px;
+  }
+
+  .harita-metric strong {
+    font-size: 21px;
+  }
+
+  .harita-map-label {
+    font-size: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .harita-weather-symbol {
+    animation: none;
+  }
+}

@@ -1,0 +1,700 @@
+
+.rehber-page {
+  min-height: 100vh;
+  padding: 0 36px 60px;
+  background:
+    radial-gradient(ellipse at 8% 20%, rgba(114,163,213,.55), transparent 48%),
+    radial-gradient(ellipse at 92% 48%, rgba(160,145,202,.4), transparent 45%),
+    radial-gradient(ellipse at 35% 95%, rgba(127,184,181,.35), transparent 50%),
+    #dce5ef;
+  color: #192b47;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.rehber-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.rehber-heading {
+  padding: 48px 0 36px;
+}
+
+.rehber-eyebrow {
+  margin: 0 0 12px;
+  color: #617795;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+
+.rehber-heading h1 {
+  margin: 0;
+  color: #192b47;
+  font-size: clamp(28px, 3.5vw, 42px);
+  letter-spacing: -1.5px;
+}
+
+.rehber-subtitle {
+  max-width: 700px;
+  margin: 15px 0 0;
+  color: #66778f;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+/* Ana tanıtım kartı */
+
+.rehber-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  min-height: 300px;
+  padding: 38px 42px;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(120deg, #243f70, #527cb1);
+  color: white;
+  box-shadow: 0 10px 28px rgba(36,63,112,.12);
+}
+
+.rehber-orbit {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  right: -100px;
+  top: -150px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.rehber-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+}
+
+.rehber-hero-eyebrow {
+  color: #c4d9ee;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.rehber-hero-content h2 {
+  margin: 22px 0 15px;
+  color: white;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+}
+
+.rehber-hero-content h2 span {
+  color: #b9d5ef;
+}
+
+.rehber-hero-content > p:not(.rehber-hero-eyebrow) {
+  max-width: 570px;
+  color: #dce6f1;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.rehber-hero-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.rehber-hero-bottom span {
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 8px;
+  background: rgba(255,255,255,.08);
+  color: #e6eef8;
+  font-size: 11px;
+}
+
+.rehber-hero-decoration {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 240px;
+  height: 240px;
+}
+
+.rehber-decoration-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 215px;
+  height: 215px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 50%;
+  background: rgba(255,255,255,.05);
+  box-shadow:
+    0 0 0 18px rgba(255,255,255,.03),
+    0 0 0 40px rgba(255,255,255,.02);
+}
+
+.rehber-decoration-circle span {
+  color: #dce6f1;
+  font-size: 11px;
+  letter-spacing: 3px;
+}
+
+.rehber-decoration-circle strong {
+  margin: 10px 0;
+  color: white;
+  font-size: 65px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.rehber-decoration-circle small {
+  color: #c4d9ee;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+/* Bölüm başlıkları */
+
+.rehber-section {
+  margin-top: 42px;
+}
+
+.rehber-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.rehber-section-heading h2 {
+  margin: 0;
+  color: #192b47;
+  font-size: 25px;
+  letter-spacing: -.8px;
+}
+
+.rehber-section-heading > span {
+  color: #697b94;
+  font-size: 12px;
+}
+
+/* Arama ve filtreleme */
+
+.rehber-search-panel {
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.38),
+    rgba(255,255,255,.08)
+  );
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.95),
+    0 8px 24px rgba(40,64,99,.08);
+}
+
+.rehber-search-label {
+  display: block;
+  margin-bottom: 12px;
+  color: #617795;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.rehber-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 17px 20px;
+  border: 1px solid #cbd6e5;
+  border-radius: 12px;
+  background: rgba(255,255,255,.85);
+  color: #192b47;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 200ms ease;
+}
+
+.rehber-search-input:focus {
+  border-color: #527cb1;
+}
+
+.rehber-search-input::placeholder {
+  color: #8796aa;
+}
+
+.rehber-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.rehber-category-button {
+  padding: 11px 17px;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 10px;
+  background: rgba(255,255,255,.4);
+  color: #526985;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.rehber-category-button:hover {
+  background: rgba(151,182,222,.4);
+}
+
+.rehber-category-button.rehber-active {
+  border-color: #243f70;
+  background: linear-gradient(120deg, #243f70, #527cb1);
+  color: white;
+}
+
+/* Meteoroloji kartları */
+
+.rehber-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.rehber-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 26px;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.38),
+    rgba(255,255,255,.08)
+  );
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,.95),
+    0 8px 24px rgba(40,64,99,.08);
+  transition: transform 220ms ease, background 220ms ease;
+}
+
+.rehber-card:hover {
+  transform: translateY(-4px);
+  background: rgba(190,211,235,.55);
+}
+
+.rehber-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 26px;
+}
+
+.rehber-card-number {
+  color: #8495ac;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.rehber-card-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 55px;
+  height: 55px;
+  padding: 0 8px;
+  border: 1px solid rgba(82,124,177,.2);
+  border-radius: 13px;
+  background: rgba(82,124,177,.12);
+  color: #294e7f;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.rehber-card-category {
+  color: #617795;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.rehber-card h3 {
+  margin: 12px 0;
+  color: #192b47;
+  font-size: 23px;
+  letter-spacing: -.5px;
+}
+
+.rehber-card-description {
+  flex-grow: 1;
+  margin: 0;
+  color: #66778f;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.rehber-card-info {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(117,143,175,.2);
+}
+
+.rehber-card-info > span {
+  color: #617795;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.rehber-card-info p {
+  margin: 9px 0 0;
+  color: #536a87;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* Sonuç bulunamadığında */
+
+.rehber-empty {
+  padding: 45px 25px;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 20px;
+  background: rgba(255,255,255,.35);
+  text-align: center;
+}
+
+.rehber-empty h3 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.rehber-empty p {
+  color: #697b94;
+  font-size: 13px;
+}
+
+.rehber-empty button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: #243f70;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Sıkça sorulan sorular */
+
+.rehber-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rehber-faq-item {
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 15px;
+  background: rgba(255,255,255,.38);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  transition: background 200ms ease;
+}
+
+.rehber-faq-item:hover,
+.rehber-faq-open {
+  background: rgba(218,232,247,.7);
+}
+
+.rehber-faq-question {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  padding: 22px 24px;
+  border: 0;
+  background: transparent;
+  color: #192b47;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rehber-faq-index {
+  color: #8293aa;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.rehber-faq-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.rehber-faq-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #c6d4e5;
+  border-radius: 8px;
+  color: #294e7f;
+  font-size: 20px;
+}
+
+.rehber-faq-answer {
+  padding: 0 24px 24px 54px;
+}
+
+.rehber-faq-answer p {
+  max-width: 850px;
+  margin: 0;
+  color: #66778f;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* Alt bölüm */
+
+.rehber-back {
+  margin-top: 35px;
+}
+
+.rehber-back a {
+  color: #294e7f;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rehber-back a:hover {
+  text-decoration: underline;
+}
+
+.rehber-footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 45px;
+  padding: 30px 0;
+  border-top: 1px solid #d5dde7;
+  color: #74849a;
+  font-size: 11px;
+}
+
+.rehber-footer strong {
+  color: #617592;
+  letter-spacing: 1.5px;
+}
+
+/* Tablet */
+
+@media (max-width: 1000px) {
+  .rehber-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rehber-hero-decoration {
+    width: 170px;
+    height: 170px;
+  }
+
+  .rehber-decoration-circle {
+    width: 155px;
+    height: 155px;
+  }
+
+  .rehber-decoration-circle strong {
+    font-size: 45px;
+  }
+}
+
+/* Telefon */
+
+@media (max-width: 650px) {
+  .rehber-page {
+    padding: 0 16px 40px;
+  }
+
+  .rehber-heading {
+    padding: 30px 0;
+  }
+
+  .rehber-hero {
+    min-height: auto;
+    padding: 30px 24px;
+  }
+
+  .rehber-hero-decoration {
+    display: none;
+  }
+
+  .rehber-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .rehber-search-panel {
+    padding: 20px;
+  }
+
+  .rehber-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rehber-card {
+    padding: 22px;
+  }
+
+  .rehber-faq-question {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .rehber-faq-answer {
+    padding: 0 18px 20px 45px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rehber-card,
+  .rehber-category-button {
+    transition: none;
+  }
+}
+
+.rehber-search-wrapper {
+  position: relative;
+}
+
+.rehber-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #d5e0ed;
+  border-radius: 12px;
+  background: #f3f7fc;
+  box-shadow: 0 15px 35px rgba(36, 63, 112, 0.18);
+}
+
+.rehber-search-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #243f70;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rehber-search-result:hover {
+  background: #dce8f6;
+}
+
+.rehber-search-result strong {
+  font-size: 13px;
+}
+
+.rehber-search-result span {
+  color: #697b94;
+  font-size: 11px;
+}
+
+.rehber-search-no-result {
+  padding: 12px;
+  color: #697b94;
+  font-size: 13px;
+}
+
+.rehber-card {
+  scroll-margin-top: 100px;
+}
+
+.rehber-search-wrapper {
+  position: relative;
+}
+
+.rehber-search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid #d5e0ed;
+  border-radius: 12px;
+  background: #f3f7fc;
+  box-shadow: 0 15px 35px rgba(36, 63, 112, 0.18);
+}
+
+.rehber-search-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #243f70;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rehber-search-result:hover {
+  background: #dce8f6;
+}
+
+.rehber-search-result strong {
+  font-size: 13px;
+}
+
+.rehber-search-result span {
+  color: #697b94;
+  font-size: 11px;
+}
+
+.rehber-search-no-result {
+  padding: 12px;
+  color: #697b94;
+  font-size: 13px;
+}
+
+.rehber-card {
+  scroll-margin-top: 100px;
+}

@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import { useEffect, useState } from "react";
@@ -189,7 +189,7 @@ function WeatherVisual({
   );
 }
 
-/* SICAKLIK GRAFİĞİ */
+
 
 function TemperatureChart({
   times,
@@ -293,7 +293,7 @@ function TemperatureChart({
   );
 }
 
-/* UV İNDEKSİ */
+
 
 function UVCard({ value }: { value?: number }) {
   const valid = typeof value === "number" && Number.isFinite(value);
@@ -393,7 +393,7 @@ function WindCompass({
   );
 }
 
-/* GÜN DOĞUMU VE BATIMI */
+
 
 function SunriseSunset({
   sunrise,
@@ -492,7 +492,7 @@ function SunriseSunset({
   );
 }
 
-/* HAVA DURUMU BİLGİLENDİRMELERİ */
+
 
 function WeatherAlerts({
   maxWind,
@@ -540,7 +540,7 @@ function WeatherAlerts({
   );
 }
 
-/* HAVA KALİTESİ */
+
 
 function AirQuality({
   city,
@@ -666,7 +666,7 @@ function AirQuality({
   );
 }
 
-/* ANA SAYFA */
+
 
 export default function Home() {
   const [selectedCity, setSelectedCity] = useState("İstanbul");
@@ -832,7 +832,7 @@ export default function Home() {
   return (
     <main className={`weather-page ${theme === "dark" ? "dark-theme" : ""}`}>
       <div className="page-container">
-        {/* ÜST MENÜ */}
+        
 
         <header className="topbar">
           <a href="#" className="brand">
@@ -870,7 +870,7 @@ export default function Home() {
           </a>
         </header>
 
-        {/* BAŞLIK */}
+        
 
         <section className="page-heading">
           <div>
@@ -922,7 +922,7 @@ export default function Home() {
 
         {!loading && current && daily && hourly && (
           <>
-            {/* GÜNCEL HAVA DURUMU */}
+           
 
             <section
               className={`current-weather theme-${currentCondition.type} ${
@@ -989,7 +989,7 @@ export default function Home() {
               </div>
             </section>
 
-            {/* ÖLÇÜM KARTLARI */}
+            
 
             <section className="metrics-grid">
               <article className="metric-card">
@@ -1059,7 +1059,7 @@ export default function Home() {
               </article>
             </section>
 
-            {/* YENİ ÖZELLİKLER */}
+            
 
             <section className="weather-extras">
               <div className="section-heading">
@@ -1103,7 +1103,7 @@ export default function Home() {
               />
             </section>
 
-            {/* 7 GÜNLÜK TAHMİN */}
+           
 
             <section id="weekly-forecast" className="weekly-section">
               <div className="section-heading">

@@ -2737,3 +2737,99 @@ html {
     margin-left: auto;
   }
 }
+
+
+/* Üst navigasyon menüsü */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 18px 24px;
+  background: #254674;
+}
+
+nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 17px;
+  border-radius: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  transition: background 0.2s ease;
+}
+
+nav a:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+nav a:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  nav {
+    gap: 6px;
+    padding: 12px;
+  }
+
+  nav a {
+    font-size: 13px;
+    padding: 9px 11px;
+  }
+}
+
+/* Modern meteoroloji navigasyonu */
+
+.main-navbar {
+  width: 100%;
+  background: #243f70;
+  padding: 14px 20px;
+  box-sizing: border-box;
+}
+
+.main-navbar .navbar-container {
+  max-width: 1250px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.main-navbar .navbar-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 15px;
+  border-radius: 10px;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.main-navbar .navbar-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.main-navbar .navbar-link.navbar-active {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+@media (max-width: 768px) {
+  .main-navbar .navbar-container {
+    justify-content: flex-start;
+  }
+
+  .main-navbar .navbar-link {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}

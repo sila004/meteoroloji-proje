@@ -1,0 +1,474 @@
+
+.kars-page {
+  min-height: 100vh;
+  padding: 0 36px 60px;
+  background:
+    radial-gradient(
+      ellipse at 8% 20%,
+      rgba(114, 163, 213, 0.55),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 92% 48%,
+      rgba(160, 145, 202, 0.4),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 35% 95%,
+      rgba(127, 184, 181, 0.35),
+      transparent 50%
+    ),
+    #dce5ef;
+
+  color: #192b47;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.kars-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.kars-heading {
+  padding: 48px 0 36px;
+}
+
+.kars-eyebrow {
+  margin: 0 0 12px;
+  color: #617795;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.kars-heading h1 {
+  margin: 0;
+  color: #192b47;
+  font-size: clamp(28px, 3.5vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+}
+
+.kars-subtitle {
+  max-width: 680px;
+  margin: 15px 0 0;
+  color: #66778f;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.kars-section {
+  margin-top: 30px;
+}
+
+.kars-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.kars-section-heading h2 {
+  margin: 0;
+  color: #192b47;
+  font-size: 25px;
+  letter-spacing: -0.8px;
+}
+
+.kars-section-heading > span {
+  color: #697b94;
+  font-size: 12px;
+}
+
+.kars-select-grid,
+.kars-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.kars-select-card,
+.kars-summary-item {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.38),
+    rgba(255, 255, 255, 0.08)
+  );
+
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    0 8px 24px rgba(40, 64, 99, 0.08);
+}
+
+.kars-select-card {
+  padding: 28px;
+  border-radius: 20px;
+}
+
+.kars-card-label {
+  color: #617795;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.kars-select-card h3 {
+  margin: 18px 0 25px;
+  color: #192b47;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.kars-select-card label {
+  display: block;
+  margin-bottom: 10px;
+  color: #617795;
+  font-size: 11px;
+}
+
+.kars-select-card select {
+  width: 100%;
+  padding: 15px 16px;
+  border: 1px solid #cbd6e5;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #203b60;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.kars-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin: 30px 0 45px;
+}
+
+.kars-button {
+  padding: 16px 32px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(120deg, #243f70, #527cb1);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(36, 63, 112, 0.2);
+  transition: transform 200ms ease;
+}
+
+.kars-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+}
+
+.kars-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.kars-warning {
+  color: #91652d;
+  font-size: 13px;
+}
+
+.kars-error {
+  color: #a13e4b;
+  font-size: 13px;
+}
+
+.kars-weather-card {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 30px 0;
+  border-radius: 24px;
+  background: linear-gradient(120deg, #243f70, #527cb1);
+  color: white;
+  box-shadow:
+    0 10px 28px rgba(36, 63, 112, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.kars-orbit {
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  right: -90px;
+  top: -100px;
+  border: 1px solid #ffffff20;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.kars-weather-top,
+.kars-weather-body,
+.kars-weather-bottom {
+  position: relative;
+  z-index: 1;
+}
+
+.kars-weather-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kars-live {
+  padding: 8px 10px;
+  border: 1px solid #ffffff28;
+  border-radius: 30px;
+  background: #ffffff0d;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.kars-weather-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 180px;
+}
+
+.kars-temperature {
+  display: flex;
+  align-items: flex-start;
+  font-size: clamp(60px, 7vw, 90px);
+  font-weight: 500;
+  letter-spacing: -5px;
+}
+
+.kars-temperature span {
+  margin: 13px 0 0 7px;
+  color: #dfe9f5;
+  font-size: 25px;
+  letter-spacing: 0;
+}
+
+.kars-weather-icon {
+  font-size: 75px;
+  animation: kars-float 5s ease-in-out infinite;
+}
+
+.kars-weather-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 25px;
+  color: white;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.kars-weather-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 0;
+  border-top: 1px solid #ffffff23;
+  color: #d0dfed;
+  font-size: 11px;
+}
+
+.kars-summary {
+  margin-top: 35px;
+}
+
+.kars-summary h2 {
+  margin: 0 0 20px;
+  color: #192b47;
+  font-size: 25px;
+}
+
+.kars-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kars-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 155px;
+  padding: 22px;
+  border-radius: 16px;
+  transition: transform 220ms ease;
+}
+
+.kars-summary-item:hover {
+  transform: translateY(-3px);
+  background: rgba(151, 182, 222, 0.46);
+}
+
+.kars-summary-item > span {
+  color: #697b94;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.kars-summary-item strong {
+  color: #192b47;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.kars-summary-item small {
+  color: #74849a;
+  font-size: 11px;
+}
+
+.kars-footer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 50px;
+  padding: 30px 0;
+  border-top: 1px solid #d5dde7;
+  color: #74849a;
+  font-size: 11px;
+}
+
+.kars-footer strong {
+  color: #617592;
+  letter-spacing: 1.5px;
+}
+
+@keyframes kars-float {
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@media (max-width: 900px) {
+  .kars-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .kars-page {
+    padding: 0 16px 40px;
+  }
+
+  .kars-heading {
+    padding: 30px 0;
+  }
+
+  .kars-select-grid,
+  .kars-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kars-select-card {
+    padding: 22px;
+  }
+
+  .kars-weather-card {
+    padding: 24px 22px 0;
+  }
+
+  .kars-weather-icon {
+    font-size: 55px;
+  }
+
+  .kars-weather-bottom {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kars-weather-icon {
+    animation: none;
+  }
+}
+
+
+.kars-select-card {
+  position: relative;
+}
+
+.kars-dropdown-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 18px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #cbd6e5;
+  border-radius: 12px;
+  color: #243f70;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.kars-dropdown {
+  position: absolute;
+  top: calc(100% - 10px);
+  left: 20px;
+  right: 20px;
+  z-index: 20;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 14px;
+  background: #f3f7fc;
+  box-shadow: 0 15px 35px rgba(36, 63, 112, 0.18);
+}
+
+.kars-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #cbd6e5;
+  border-radius: 9px;
+  background: white;
+  color: #192b47;
+  font-size: 14px;
+  outline: none;
+}
+
+.kars-search-input:focus {
+  border-color: #527cb1;
+}
+
+.kars-city-list {
+  max-height: 210px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.kars-city-option {
+  display: block;
+  width: 100%;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #243f70;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.kars-city-option:hover {
+  background: #dce8f6;
+}
+
+.kars-no-result {
+  padding: 10px;
+  color: #697b94;
+  font-size: 13px;
+}
+
