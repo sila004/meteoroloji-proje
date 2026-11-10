@@ -6,7 +6,7 @@ export { apiUrl };
 type ApiResponse<T> = {
   data?: T;
   statusCode: number;
-  error?: { errors?: string[] };
+  error?: { errors?: string[]; code?: string; params?: { retryAfterSeconds?: string } };
 };
 
 export async function getApiData<T>(
@@ -18,6 +18,17 @@ export async function getApiData<T>(
   const result: ApiResponse<T> = await response.json();
 
   if (!response.ok || result.data == null) {
+    if (result.error?.code === "WeatherProviderRateLimited") {
+      const seconds = Number(response.headers.get("Retry-After") ?? result.error.params?.retryAfterSeconds);
+      const serverTime = Date.parse(response.headers.get("Date") ?? "");
+      const retryTime = new Date((Number.isFinite(serverTime) ? serverTime : Date.now()) + seconds * 1000);
+      if (Number.isFinite(seconds) && seconds > 0 && Number.isFinite(retryTime.getTime())) {
+        const availableAt = retryTime.toLocaleString("tr-TR", {
+          timeZone: "Europe/Istanbul", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit",
+        });
+        throw new Error(`Hava verisi sağlayıcısının istek sınırı doldu. Sağlayıcının bildirdiği yeniden deneme zamanı: ${availableAt} (Türkiye saati).`);
+      }
+    }
     throw new Error(result.error?.errors?.[0] ?? fallbackMessage);
   }
 
