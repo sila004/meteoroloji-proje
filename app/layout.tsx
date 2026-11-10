@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
 import ThemeProvider from "./components/ThemeProvider";
+import WeatherLibraryProvider from "./components/WeatherLibraryProvider";
+import WeatherAttribution from "./components/WeatherAttribution";
 import { themeInitializationScript } from "./lib/theme";
 import "./globals.css";
 import "./app.css";
@@ -24,8 +26,11 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeProvider>
+          <WeatherLibraryProvider>
           <Navbar />
           {children}
+          <WeatherAttribution />
+          </WeatherLibraryProvider>
         </ThemeProvider>
       </body>
     </html>

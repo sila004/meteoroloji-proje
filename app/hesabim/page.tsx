@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { accountRequest, AccountApiError, type MailStatus, type WeatherAccount } from "../lib/account";
+import { accountRequest, AccountApiError, notifyAccountChanged, type MailStatus, type WeatherAccount } from "../lib/account";
 import "./hesabim.css";
 
 export default function WeatherAccountPage() {
@@ -92,6 +92,7 @@ function WeatherAccountContent() {
   async function verify() {
     await action(async () => {
       const profile = await accountRequest<WeatherAccount>("/verify", "POST", { challengeId, code });
+      notifyAccountChanged();
       setAccount(profile);
       setCity(profile.city);
       setDeliveryTime(profile.deliveryTime);
@@ -198,7 +199,7 @@ function WeatherAccountContent() {
                   })}>Bana bir test maili gönder</button>
                 <p className="account-hint">Günlük mailleri buradan veya gelen maildeki bağlantıdan istediğin zaman durdurabilirsin.</p>
                 <button className="account-logout" type="button" disabled={busy} onClick={() => void action(async () => {
-                  await accountRequest("/logout", "POST"); setAccount(null); setEmail(""); setNotice("Çıkış yapıldı.");
+                  await accountRequest("/logout", "POST"); notifyAccountChanged(); setAccount(null); setEmail(""); setNotice("Çıkış yapıldı.");
                 })}>Hesaptan çıkış yap</button>
               </form>
             )}

@@ -9,9 +9,12 @@ import {
   type AirQuality,
 } from "../lib/weather";
 import "./hava-kalitesi.css";
+import { LibraryNotice, useSavedCity } from "../components/WeatherLibraryProvider";
 
 export default function HavaKalitesi() {
-  const [selected, setSelected] = useState(0);
+  const { city: savedCity, selectCity: saveCity, disabled, message } = useSavedCity("air-quality");
+  const selected = Math.max(0, cities.findIndex(city => city.name === savedCity));
+  const setSelected = (index: number) => { void saveCity(cities[index].name); };
   const [air, setAir] = useState<AirQuality | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -124,6 +127,8 @@ export default function HavaKalitesi() {
              
           </p>
         </header>
+        <LibraryNotice>Hava kalitesinde son seçtiğin şehir hesabında hatırlanır.</LibraryNotice>
+        {message && <p className="library-notice" role="status">{message}</p>}
 
         <section className="air-section">
           <div className="air-section-heading">
@@ -152,6 +157,7 @@ export default function HavaKalitesi() {
               <button
                 type="button"
                 className="air-dropdown-button"
+                disabled={disabled}
                 aria-expanded={open}
                 onClick={() => {
                   setOpen(!open);
@@ -177,6 +183,7 @@ export default function HavaKalitesi() {
                       setSearch(e.target.value)
                     }
                     onKeyDown={(e) => {
+                      if (disabled) return;
                       if (e.key === "Escape") {
                         setOpen(false);
                       }
@@ -204,6 +211,7 @@ export default function HavaKalitesi() {
                         key={item.name}
                         type="button"
                         className="air-city-option"
+                        disabled={disabled}
                         onClick={() => {
                           setSelected(item.index);
                           setOpen(false);

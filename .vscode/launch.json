@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Meteoroloji — Frontend",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
+      "args": ["dev", "--port", "3000"],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "serverReadyAction": {
+        "pattern": "Ready in",
+        "uriFormat": "http://localhost:3000",
+        "action": "openExternally"
+      }
+    }
+  ]
+}

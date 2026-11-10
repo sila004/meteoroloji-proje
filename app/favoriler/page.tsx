@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import {
   cities,
@@ -10,8 +10,8 @@ import {
   type Weather,
 } from "../lib/weather";
 import "./favoriler.css";
-
-const STORAGE_KEY = "meteoroloji-favoriler";
+import { useWeatherLibrary } from "../components/WeatherLibraryProvider";
+import { parseFavorites, readFavorites, storeFavorites, subscribeFavorites } from "../lib/favorites";
 
 // Arama yapılabilen şehir seçme kutusu
 function CitySearch({
@@ -136,9 +136,11 @@ function CitySearch({
 function FavoriteWeatherCard({
   name,
   onRemove,
+  disabled,
 }: {
   name: string;
   onRemove: (name: string) => void;
+  disabled: boolean;
 }) {
   const [weather, setWeather] = useState<Weather | null>(null);
   const [loading, setLoading] = useState(true);
@@ -147,15 +149,10 @@ function FavoriteWeatherCard({
   useEffect(() => {
     const city = cities.find((item) => item.name === name);
 
-    if (!city) {
-      setError("Şehir bulunamadı.");
-      setLoading(false);
-      return;
-    }
-
     let active = true;
 
-    getWeather(city)
+    const request = city ? getWeather(city) : Promise.reject(new Error("Şehir bulunamadı."));
+    request
       .then((data) => {
         if (active) {
           setWeather(data);
@@ -163,7 +160,7 @@ function FavoriteWeatherCard({
       })
       .catch(() => {
         if (active) {
-          setError("Hava durumu alınamadı.");
+          setError(city ? "Hava durumu alınamadı." : "Şehir bulunamadı.");
         }
       })
       .finally(() => {
@@ -187,6 +184,7 @@ function FavoriteWeatherCard({
         <button
           type="button"
           className="fav-remove-button"
+          disabled={disabled}
           onClick={() => onRemove(name)}
           aria-label={`${name} favorilerden çıkar`}
           title="Favorilerden çıkar"
@@ -245,65 +243,51 @@ function FavoriteWeatherCard({
 }
 
 export default function Favoriler() {
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const { library, loading: accountLoading, error: accountError, favorite } = useWeatherLibrary();
+  const stored = useSyncExternalStore(subscribeFavorites, readFavorites, () => null);
+  const guestFavorites = parseFavorites(stored);
   const [selected, setSelected] = useState(0);
-  const [ready, setReady] = useState(false);
-
-  // Kaydedilen favorileri tarayıcıdan yükle
-  useEffect(() => {
-    try {
-      const saved = JSON.parse(
-        localStorage.getItem(STORAGE_KEY) || "[]"
-      );
-
-      if (Array.isArray(saved)) {
-        const valid = saved.filter(
-          (name): name is string =>
-            typeof name === "string" &&
-            cities.some((city) => city.name === name)
-        );
-
-        setFavorites([...new Set(valid)]);
-      }
-    } catch {
-      setFavorites([]);
-    }
-
-    setReady(true);
-  }, []);
-
-  // Favorileri kaydet
-  function updateFavorites(next: string[]) {
-    setFavorites(next);
-
-    try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(next)
-      );
-    } catch {
-      // Depolama kullanılamasa da sayfa çalışır.
-    }
-  }
+  const ready = stored !== null;
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const favorites = library ? library.favorites : guestFavorites;
+  const disabled = !ready || accountLoading || !!accountError || busy;
+  const importable = guestFavorites.filter(name => !favorites.includes(name));
 
   // Favoriye ekle veya favoriden kaldır
+  async function changeFavorite(name: string, add: boolean) {
+    if (disabled) return;
+    setBusy(true);
+    setError("");
+    try {
+      if (library) {
+        await favorite(name, add);
+      } else {
+        storeFavorites(add ? [...favorites, name] : favorites.filter(item => item !== name));
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Favoriler kaydedilemedi. Tekrar dene.");
+    } finally { setBusy(false); }
+  }
+
   function toggleFavorite() {
     const name = cities[selected].name;
-
-    if (favorites.includes(name)) {
-      updateFavorites(
-        favorites.filter((item) => item !== name)
-      );
-    } else {
-      updateFavorites([...favorites, name]);
-    }
+    void changeFavorite(name, !favorites.includes(name));
   }
 
   // Kart üzerindeki yıldızdan favori kaldır
   function removeFavorite(name: string) {
-    updateFavorites(
-      favorites.filter((item) => item !== name)
-    );
+    void changeFavorite(name, false);
+  }
+
+  async function importFavorites() {
+    setBusy(true);
+    setError("");
+    try {
+      for (const name of importable) await favorite(name, true);
+    } catch {
+      setError("Aktarım tamamlanamadı. Aktarılmayan şehirler için yeniden deneyebilirsin.");
+    } finally { setBusy(false); }
   }
 
   const alreadyFavorite = favorites.includes(
@@ -327,6 +311,12 @@ export default function Favoriler() {
             tek ekranda görüntüle.
           </p>
         </header>
+        {!accountLoading && !library && !accountError && <p className="library-notice">Şu an favorilerin yalnızca bu tarayıcıda saklanıyor.</p>}
+        {library && importable.length > 0 && <div className="library-notice">
+          Bu tarayıcıda hesabına eklenmemiş {importable.length} favori şehir var.{" "}
+          <button type="button" disabled={disabled} onClick={() => void importFavorites()}>Favorilerimi hesabıma aktar</button>
+        </div>}
+        {error && <p className="library-notice library-error" role="alert">{error}</p>}
 
         <section className="fav-section">
           <div className="fav-section-heading">
@@ -338,9 +328,6 @@ export default function Favoriler() {
               <h2>Şehir Ekle</h2>
             </div>
 
-            <span>
-              Şehirlerini kişiselleştir
-            </span>
           </div>
 
           <div className="fav-add-card">
@@ -373,7 +360,7 @@ export default function Favoriler() {
                     : ""
                 }`}
                 onClick={toggleFavorite}
-                disabled={!ready}
+                disabled={disabled}
               >
                 {alreadyFavorite
                   ? " Favorilerden Kaldır"
@@ -398,13 +385,13 @@ export default function Favoriler() {
             </span>
           </div>
 
-          {!ready && (
+          {(!ready || accountLoading) && (
             <div className="fav-empty">
               Favoriler yükleniyor...
             </div>
           )}
 
-          {ready && favorites.length === 0 && (
+          {ready && !accountLoading && !accountError && favorites.length === 0 && (
             <div className="fav-empty">
               <span className="fav-empty-icon">
                
@@ -421,13 +408,14 @@ export default function Favoriler() {
             </div>
           )}
 
-          {ready && favorites.length > 0 && (
+          {ready && !accountLoading && !accountError && favorites.length > 0 && (
             <div className="fav-weather-grid">
               {favorites.map((name) => (
                 <FavoriteWeatherCard
                   key={name}
                   name={name}
                   onRemove={removeFavorite}
+                  disabled={disabled}
                 />
               ))}
             </div>

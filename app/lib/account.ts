@@ -23,6 +23,10 @@ export class AccountApiError extends Error {
   constructor(message: string, public status: number) { super(message); }
 }
 
+export function notifyAccountChanged() {
+  window.dispatchEvent(new Event("weather-account-changed"));
+}
+
 export async function accountRequest<T>(path: string, method = "GET", data?: unknown, signal?: AbortSignal): Promise<T> {
   const response = await fetch(`${apiUrl}/api/weather-account${path}`, {
     method,
@@ -34,7 +38,8 @@ export async function accountRequest<T>(path: string, method = "GET", data?: unk
   });
   const result = await response.json().catch(() => null);
   if (!response.ok) {
-    const message = result?.message ?? (response.status === 401 ? "Giriş yapman gerekiyor." :
+    if (response.status === 401 && path !== "/library" && path !== "/me") notifyAccountChanged();
+    const message = result?.message ?? result?.error?.errors?.[0] ?? (response.status === 401 ? "Giriş yapman gerekiyor." :
       response.status === 429 ? "Çok fazla deneme yapıldı. Bir süre sonra tekrar dene." : "İşlem tamamlanamadı. Lütfen tekrar dene.");
     throw new AccountApiError(message, response.status);
   }

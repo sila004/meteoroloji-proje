@@ -213,16 +213,6 @@ export default function RehberPage() {
             </p>
           </div>
 
-          <div
-            className="rehber-hero-decoration"
-            aria-hidden="true"
-          >
-            <div className="rehber-decoration-circle">
-              <span>METEO</span>
-              <strong>01</strong>
-              <small>BİLGİ MERKEZİ</small>
-            </div>
-          </div>
         </section>
 
         {/* Arama ve kategoriler */}

@@ -9,48 +9,39 @@ import {
   type Weather,
 } from "../lib/weather";
 import "./harita.css";
+import { useSavedCity } from "../components/WeatherLibraryProvider";
 
 export default function Harita() {
-  const [selected, setSelected] = useState(0);
+  const { city: savedCity, selectCity: saveCity, disabled, message } = useSavedCity("map");
+  const selected = Math.max(0, cities.findIndex(city => city.name === savedCity));
   const [weather, setWeather] = useState<Weather | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     let active = true;
-
-    getWeather(cities[0])
-      .then((data) => {
+    async function load() {
+      setLoading(true);
+      setError("");
+      setWeather(null);
+      try {
+        const data = await getWeather(cities[selected]);
         if (active) setWeather(data);
-      })
-      .catch(() => {
-        if (active) {
-          setError("Hava durumu alınamadı.");
-        }
-      })
-      .finally(() => {
+      } catch {
+        if (active) setError("Hava durumu alınamadı.");
+      } finally {
         if (active) setLoading(false);
-      });
+      }
+    }
+    void load();
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [selected]);
 
-  async function selectCity(index: number) {
-    setSelected(index);
-    setLoading(true);
-    setError("");
-    setWeather(null);
-
-    try {
-      const data = await getWeather(cities[index]);
-      setWeather(data);
-    } catch {
-      setError("Hava durumu alınamadı.");
-    } finally {
-      setLoading(false);
-    }
+  function selectCity(index: number) {
+    void saveCity(cities[index].name);
   }
 
   const minLon = 25.4;
@@ -75,6 +66,7 @@ export default function Harita() {
             </p>
           </div>
         </header>
+        {message && <p className="library-notice" role="status">{message}</p>}
 
         <section className="harita-section">
           <div className="harita-section-heading">
@@ -112,6 +104,7 @@ export default function Harita() {
                   <button
                     key={city.name}
                     type="button"
+                    disabled={disabled}
                     className={
                       selected === index
                         ? "harita-pin harita-pin-active"

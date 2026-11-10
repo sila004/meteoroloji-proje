@@ -9,16 +9,21 @@ import {
   type Weather,
 } from "../lib/weather";
 import "./karsilastir.css";
+import { accountRequest } from "../lib/account";
+import { type SavedComparison } from "../lib/comparisons";
+import { LibraryNotice, useWeatherLibrary } from "../components/WeatherLibraryProvider";
 
 // Arama yapılabilen şehir seçme kutusu
 function CitySearch({
   label,
   value,
   onChange,
+  disabled,
 }: {
   label: string;
   value: number;
   onChange: (index: number) => void;
+  disabled: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -66,6 +71,7 @@ function CitySearch({
       <button
         type="button"
         className="kars-dropdown-button"
+        disabled={disabled}
         aria-expanded={open}
         onClick={() => {
           setOpen(!open);
@@ -87,6 +93,7 @@ function CitySearch({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => {
+              if (disabled) return;
               if (e.key === "Escape") {
                 setOpen(false);
               }
@@ -114,6 +121,7 @@ function CitySearch({
                 key={city.name}
                 type="button"
                 className="kars-city-option"
+                disabled={disabled}
                 onClick={() => {
                   onChange(city.index);
                   setOpen(false);
@@ -132,6 +140,7 @@ function CitySearch({
 
 // Karşılaştırma sayfası
 export default function Karsilastir() {
+  const { library, loading: accountLoading, error: accountError } = useWeatherLibrary();
   const [first, setFirst] = useState(0);
   const [second, setSecond] = useState(1);
   const [results, setResults] = useState<Weather[] | null>(
@@ -139,34 +148,94 @@ export default function Karsilastir() {
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [history, setHistory] = useState<SavedComparison[]>([]);
+  const [historyOwner, setHistoryOwner] = useState<string | null>(null);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyError, setHistoryError] = useState("");
+  const [historyRevision, setHistoryRevision] = useState(0);
+  const [clearing, setClearing] = useState(false);
+  const [clearRequested, setClearRequested] = useState(false);
+  const [resultDate, setResultDate] = useState<string | null>(null);
+  const [resultOwner, setResultOwner] = useState<string | null>(null);
+  const owner = library?.email ?? null;
+  const visibleHistory = historyOwner === owner ? history : [];
+  const visibleResults = resultOwner === owner ? results : null;
+
+  useEffect(() => {
+    if (!owner) return;
+    const controller = new AbortController();
+    async function loadHistory() {
+      setHistoryLoading(true);
+      setHistoryError("");
+      setHistory([]);
+      try {
+        const items = await accountRequest<SavedComparison[]>("/comparisons", "GET", undefined, controller.signal);
+        if (!controller.signal.aborted) { setHistory(items); setHistoryOwner(owner); }
+      } catch {
+        if (!controller.signal.aborted) setHistoryError("Karşılaştırma geçmişin yüklenemedi.");
+      } finally { if (!controller.signal.aborted) setHistoryLoading(false); }
+    }
+    void loadHistory();
+    return () => controller.abort();
+  }, [owner, historyRevision]);
+
+  async function clearHistory() {
+    setClearing(true);
+    setHistoryError("");
+    try {
+      await accountRequest("/comparisons", "DELETE");
+      setClearRequested(false);
+      setHistoryRevision(value => value + 1);
+    } catch {
+      setHistoryError("Geçmiş temizlenemedi. Tekrar dene.");
+    } finally { setClearing(false); }
+  }
+
+  function openHistory(item: SavedComparison) {
+    const firstIndex = cities.findIndex(city => city.name === item.firstCity);
+    const secondIndex = cities.findIndex(city => city.name === item.secondCity);
+    if (firstIndex < 0 || secondIndex < 0) return;
+    setFirst(firstIndex);
+    setSecond(secondIndex);
+    setResults([item.firstWeather, item.secondWeather]);
+    setResultDate(item.comparedUtc);
+    setResultOwner(owner);
+    setError("");
+  }
 
   async function compare() {
-    if (first === second || loading) return;
+    if (first === second || loading || accountLoading || historyLoading || clearing || accountError) return;
 
     setLoading(true);
     setError("");
     setResults(null);
+    setResultDate(null);
 
     try {
-      const data = await Promise.all([
-        getWeather(cities[first]),
-        getWeather(cities[second]),
-      ]);
-
-      setResults(data);
-    } catch {
+      if (library) {
+        const item = await accountRequest<SavedComparison>("/comparisons", "POST", {
+          firstCity: cities[first].name, secondCity: cities[second].name,
+        });
+        setResults([item.firstWeather, item.secondWeather]);
+        setResultDate(item.comparedUtc);
+        setHistoryRevision(value => value + 1);
+      } else {
+        setResults(await Promise.all([getWeather(cities[first]), getWeather(cities[second])]));
+      }
+      setResultOwner(owner);
+    } catch (err) {
       setError(
-        "Karşılaştırma yapılamadı. Lütfen tekrar dene."
+        err instanceof Error ? err.message : "Karşılaştırma yapılamadı. Lütfen tekrar dene."
       );
     } finally {
       setLoading(false);
     }
   }
 
-  const fark = results
+  const fark = visibleResults
     ? Math.abs(
-        results[0].temperature -
-          results[1].temperature
+        visibleResults[0].temperature -
+          visibleResults[1].temperature
       ).toFixed(1)
     : null;
 
@@ -183,11 +252,12 @@ export default function Karsilastir() {
           <h1>Şehir Karşılaştırma</h1>
 
           <p className="kars-subtitle">
-            Türkiye'deki iki şehrin güncel hava
+            Türkiye’deki iki şehrin güncel hava
             koşullarını karşılaştır. Sıcaklık, nem ve
             rüzgâr değerlerini tek ekranda incele.
           </p>
         </header>
+        <LibraryNotice>Son 50 kayıt saklanır.</LibraryNotice>
 
         {/* Şehir seçimi */}
         <section className="kars-section">
@@ -206,6 +276,7 @@ export default function Karsilastir() {
             <CitySearch
               label="01 / BİRİNCİ ŞEHİR"
               value={first}
+              disabled={loading || clearing}
               onChange={(index) => {
                 setFirst(index);
                 setResults(null);
@@ -216,6 +287,7 @@ export default function Karsilastir() {
             <CitySearch
               label="02 / İKİNCİ ŞEHİR"
               value={second}
+              disabled={loading || clearing}
               onChange={(index) => {
                 setSecond(index);
                 setResults(null);
@@ -230,7 +302,7 @@ export default function Karsilastir() {
               className="kars-button"
               onClick={compare}
               disabled={
-                loading || first === second
+                loading || accountLoading || historyLoading || clearing || !!accountError || first === second
               }
             >
               {loading
@@ -251,7 +323,7 @@ export default function Karsilastir() {
         </section>
 
         {/* Karşılaştırma sonuçları */}
-        {results && (
+        {visibleResults && (
           <section className="kars-section">
             <div className="kars-section-heading">
               <div>
@@ -259,11 +331,12 @@ export default function Karsilastir() {
                   GÜNCEL METEOROLOJİ VERİLERİ
                 </p>
                 <h2>Karşılaştırma Sonuçları</h2>
+                {resultDate && <p className="library-notice">Kayıt zamanı: {new Date(resultDate).toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" })}. Bu değerler karşılaştırma anına aittir. Güncellemek için yeniden karşılaştır.</p>}
               </div>
             </div>
 
             <div className="kars-result-grid">
-              {results.map((weather, index) => (
+              {visibleResults.map((weather, index) => (
                 <article
                   className="kars-weather-card"
                   key={index}
@@ -283,7 +356,7 @@ export default function Karsilastir() {
                     </span>
 
                     <span className="kars-live">
-                      GÜNCEL VERİ
+                      {resultDate ? "KAYITLI SONUÇ" : "GÜNCEL VERİ"}
                     </span>
                   </div>
 
@@ -350,11 +423,11 @@ export default function Karsilastir() {
                   <span>DAHA SICAK ŞEHİR</span>
 
                   <strong>
-                    {results[0].temperature ===
-                    results[1].temperature
+                    {visibleResults[0].temperature ===
+                    visibleResults[1].temperature
                       ? "Eşit"
-                      : results[0].temperature >
-                        results[1].temperature
+                      : visibleResults[0].temperature >
+                        visibleResults[1].temperature
                       ? cities[first].name
                       : cities[second].name}
                   </strong>
@@ -368,11 +441,11 @@ export default function Karsilastir() {
                   <span>DAHA NEMLİ ŞEHİR</span>
 
                   <strong>
-                    {results[0].humidity ===
-                    results[1].humidity
+                    {visibleResults[0].humidity ===
+                    visibleResults[1].humidity
                       ? "Eşit"
-                      : results[0].humidity >
-                        results[1].humidity
+                      : visibleResults[0].humidity >
+                        visibleResults[1].humidity
                       ? cities[first].name
                       : cities[second].name}
                   </strong>
@@ -386,11 +459,11 @@ export default function Karsilastir() {
                   <span>DAHA RÜZGÂRLI ŞEHİR</span>
 
                   <strong>
-                    {results[0].wind ===
-                    results[1].wind
+                    {visibleResults[0].wind ===
+                    visibleResults[1].wind
                       ? "Eşit"
-                      : results[0].wind >
-                        results[1].wind
+                      : visibleResults[0].wind >
+                        visibleResults[1].wind
                       ? cities[first].name
                       : cities[second].name}
                   </strong>
@@ -403,6 +476,24 @@ export default function Karsilastir() {
             </div>
           </section>
         )}
+
+        {library && <section className="library-history" aria-labelledby="comparison-history-title">
+          <h2 id="comparison-history-title">Karşılaştırma Geçmişim</h2>
+          {historyLoading && <p role="status">Geçmiş yükleniyor…</p>}
+          {historyError && <p className="library-error" role="alert">{historyError} <button type="button" disabled={clearing || loading} onClick={() => setHistoryRevision(value => value + 1)}>Tekrar dene</button></p>}
+          {!historyLoading && !historyError && visibleHistory.length === 0 && <p>Henüz kayıtlı karşılaştırman yok. İki şehir seçip karşılaştırarak başlayabilirsin.</p>}
+          {!historyLoading && visibleHistory.length > 0 && <>
+            <ul>{visibleHistory.map(item => <li key={item.id}>
+              <div><strong>{item.firstCity} ({item.firstWeather.temperature}°C) / {item.secondCity} ({item.secondWeather.temperature}°C)</strong>
+                <small>{new Date(item.comparedUtc).toLocaleString("tr-TR", { timeZone: "Europe/Istanbul" })}</small></div>
+              <button type="button" disabled={loading || clearing} onClick={() => openHistory(item)}>Kaydı görüntüle</button>
+            </li>)}</ul>
+            {clearRequested ? <p>Hesabındaki bütün karşılaştırma geçmişi silinsin mi?{" "}
+              <button type="button" disabled={clearing || loading} onClick={() => void clearHistory()}>{clearing ? "Temizleniyor…" : "Evet, geçmişimi sil"}</button>{" "}
+              <button type="button" disabled={clearing} onClick={() => setClearRequested(false)}>Vazgeç</button>
+            </p> : <button type="button" disabled={loading || clearing} onClick={() => setClearRequested(true)}>Geçmişimi temizle</button>}
+          </>}
+        </section>}
 
         {/* Sayfa altı */}
         <footer className="kars-footer">

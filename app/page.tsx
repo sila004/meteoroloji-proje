@@ -6,6 +6,7 @@ import { getApiData } from "./lib/api";
 import { useTheme } from "./components/ThemeProvider";
 import OutdoorPlan from "./components/OutdoorPlan";
 import { localMinute } from "./lib/outdoor";
+import { useSavedCity } from "./components/WeatherLibraryProvider";
 import "./app.css";
 
 type City = {
@@ -21,7 +22,7 @@ type CurrentWeather = {
   relative_humidity_2m: number;
   wind_speed_10m: number;
   wind_direction_10m: number;
-  surface_pressure: number;
+  surface_pressure: number | null;
   precipitation: number;
   cloud_cover: number;
   weather_code: number;
@@ -48,7 +49,7 @@ type HourlyWeather = {
   wind_speed_10m: number[];
   relative_humidity_2m: number[];
   is_day: number[];
-  uv_index: number[];
+  uv_index: (number | null)[];
 };
 
 type WeatherResponse = {
@@ -501,13 +502,13 @@ function WeatherAlerts({
   maxRainProbability,
   maxUv,
 }: {
-  maxWind: number;
+  maxWind?: number;
   maxRainProbability: number;
   maxUv?: number;
 }) {
   const alerts: string[] = [];
 
-  if (maxWind >= 40) {
+  if (typeof maxWind === "number" && maxWind >= 40) {
     alerts.push("Kuvvetli rüzgâr ihtimali bulunuyor.");
   }
 
@@ -525,7 +526,9 @@ function WeatherAlerts({
       <h3>Hava Durumu Bilgilendirmeleri</h3>
 
       {alerts.length === 0 ? (
-        <p>Seçilen gün için belirlenen eşikleri aşan bir durum yok.</p>
+        <p>{typeof maxWind === "number" && typeof maxUv === "number"
+          ? "Seçilen gün için belirlenen eşikleri aşan bir durum yok."
+          : "Bazı ölçümler eksik olduğu için tüm hava koşulları değerlendirilemiyor."}</p>
       ) : (
         <ul>
           {alerts.map((alert) => (
@@ -654,7 +657,7 @@ function AirQuality({
 
 
 export default function Home() {
-  const [selectedCity, setSelectedCity] = useState("İstanbul");
+  const { city: selectedCity, selectCity: setSelectedCity, disabled: citySaving, message: cityMessage } = useSavedCity("home");
   const [weather, setWeather] = useState<WeatherResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -757,7 +760,7 @@ export default function Home() {
           ({ index }) => hourly?.wind_speed_10m[index] ?? 0
         )
       )
-    : 0;
+    : undefined;
 
   const maxRainProbability =
     selectedDayIndex >= 0
@@ -819,7 +822,8 @@ export default function Home() {
             <select
               id="city-select"
               value={selectedCity}
-              onChange={(event) => setSelectedCity(event.target.value)}
+              disabled={citySaving}
+              onChange={(event) => void setSelectedCity(event.target.value)}
             >
               {cities.map((item) => (
                 <option key={item.name} value={item.name}>
@@ -829,6 +833,8 @@ export default function Home() {
             </select>
           </div>
         </section>
+
+        {cityMessage && <p className="library-notice" role="status">{cityMessage}</p>}
 
         {loading && (
           <div className="state-panel" role="status">
@@ -1108,6 +1114,7 @@ export default function Home() {
               </div>
 
               <div className="hourly-scroll" tabIndex={0}>
+                {selectedHours.length === 0 && <p className="selection-hint">Bu gün için saatlik tahmin sağlanmıyor. Günlük tahmini yukarıdan inceleyebilir veya başka bir gün seçebilirsin.</p>}
                 <ul className="hourly-list">
                   {selectedHours.map(({ time, index }) => (
                     <li className="hourly-card" key={time}>
