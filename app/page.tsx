@@ -2,6 +2,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getApiData } from "./lib/api";
+import { useTheme } from "./components/ThemeProvider";
+import OutdoorPlan from "./components/OutdoorPlan";
+import { localMinute } from "./lib/outdoor";
 import "./app.css";
 
 type City = {
@@ -48,6 +52,7 @@ type HourlyWeather = {
 };
 
 type WeatherResponse = {
+  timezone?: string;
   current: CurrentWeather;
   daily: DailyWeather;
   hourly: HourlyWeather;
@@ -400,23 +405,20 @@ function SunriseSunset({
   sunset,
   selectedDate,
   clock,
+  timezone,
 }: {
   sunrise: string;
   sunset: string;
   selectedDate: string;
   clock: string;
+  timezone: string;
 }) {
   const toMinutes = (time: string) => {
     const [hours, minutes] = time.slice(11, 16).split(":").map(Number);
     return hours * 60 + minutes;
   };
 
-  const today = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Istanbul",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(new Date());
+  const today = localMinute(new Date(), timezone).slice(0, 10);
 
   const start = toMinutes(sunrise);
   const end = toMinutes(sunset);
@@ -562,28 +564,11 @@ function AirQuality({
       setAir(null);
 
       try {
-        const params = new URLSearchParams({
-          latitude: String(city.latitude),
-          longitude: String(city.longitude),
-          current: [
-            "pm2_5",
-            "pm10",
-            "carbon_monoxide",
-            "nitrogen_dioxide",
-            "ozone",
-            "sulphur_dioxide",
-          ].join(","),
-          timezone: "Europe/Istanbul",
-        });
-
-        const response = await fetch(
-          `https://air-quality-api.open-meteo.com/v1/air-quality?${params}`,
-          { signal: controller.signal }
+        const data = await getApiData<AirResponse>(
+          `/api/hava-kalitesi/detay?city=${encodeURIComponent(city.name)}`,
+          "Hava kalitesi alınamadı.",
+          controller.signal
         );
-
-        if (!response.ok) throw new Error("Hava kalitesi alınamadı.");
-
-        const data: AirResponse = await response.json();
 
         if (!controller.signal.aborted) setAir(data);
       } catch (err) {
@@ -676,27 +661,18 @@ export default function Home() {
   const [refreshCount, setRefreshCount] = useState(0);
   const [selectedDate, setSelectedDate] = useState("");
   const [clock, setClock] = useState("");
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [now, setNow] = useState<number | null>(null);
+  const { theme, toggleTheme } = useTheme();
 
   const city = cities.find((item) => item.name === selectedCity) ?? cities[8];
-
-  useEffect(() => {
-    const saved = localStorage.getItem("meteoroloji-theme");
-
-    if (saved === "dark" || saved === "light") {
-      setTheme(saved);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("meteoroloji-theme", theme);
-  }, [theme]);
+  const timezone = weather?.timezone ?? "Europe/Istanbul";
 
   useEffect(() => {
     function updateClock() {
+      setNow(Date.now());
       setClock(
         new Date().toLocaleTimeString("tr-TR", {
-          timeZone: "Europe/Istanbul",
+          timeZone: timezone,
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
@@ -707,7 +683,7 @@ export default function Home() {
     updateClock();
     const timer = setInterval(updateClock, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [timezone]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -719,52 +695,11 @@ export default function Home() {
       setSelectedDate("");
 
       try {
-        const params = new URLSearchParams({
-          latitude: String(city.latitude),
-          longitude: String(city.longitude),
-          current: [
-            "temperature_2m",
-            "apparent_temperature",
-            "relative_humidity_2m",
-            "wind_speed_10m",
-            "wind_direction_10m",
-            "surface_pressure",
-            "precipitation",
-            "cloud_cover",
-            "weather_code",
-            "is_day",
-          ].join(","),
-          daily: [
-            "weather_code",
-            "temperature_2m_max",
-            "temperature_2m_min",
-            "precipitation_probability_max",
-            "sunrise",
-            "sunset",
-          ].join(","),
-          hourly: [
-            "temperature_2m",
-            "apparent_temperature",
-            "weather_code",
-            "precipitation_probability",
-            "precipitation",
-            "wind_speed_10m",
-            "relative_humidity_2m",
-            "is_day",
-            "uv_index",
-          ].join(","),
-          timezone: "Europe/Istanbul",
-          forecast_days: "7",
-        });
-
-        const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?${params}`,
-          { signal: controller.signal }
+        const data = await getApiData<WeatherResponse>(
+          `/api/hava-durumu/tahmin?city=${encodeURIComponent(city.name)}`,
+          "Hava durumu alınamadı.",
+          controller.signal
         );
-
-        if (!response.ok) throw new Error("Hava durumu alınamadı.");
-
-        const data: WeatherResponse = await response.json();
 
         if (!data.current || !data.daily || !data.hourly) {
           throw new Error("Hava durumu verileri eksik.");
@@ -830,7 +765,7 @@ export default function Home() {
       : 0;
 
   return (
-    <main className={`weather-page ${theme === "dark" ? "dark-theme" : ""}`}>
+    <main className="weather-page">
       <div className="page-container">
         
 
@@ -853,11 +788,8 @@ export default function Home() {
           <button
             type="button"
             className="theme-toggle"
-            onClick={() =>
-              setTheme((previous) =>
-                previous === "light" ? "dark" : "light"
-              )
-            }
+            onClick={toggleTheme}
+            aria-pressed={theme === "dark"}
             aria-label={
               theme === "light" ? "Koyu temaya geç" : "Açık temaya geç"
             }
@@ -934,7 +866,7 @@ export default function Home() {
 
               <div className="hero-top">
                 <div className="location-tag">
-                  <span>⌖</span> {selectedCity}, Türkiye
+                  <span>⌖</span> {city.name}, Türkiye
                 </div>
 
                 <span className="data-badge">
@@ -1061,6 +993,8 @@ export default function Home() {
 
             
 
+            <OutdoorPlan hourly={hourly} selectedDate={selectedDate} timezone={timezone} cityName={city.name} now={now} />
+
             <section className="weather-extras">
               <div className="section-heading">
                 <div>
@@ -1087,6 +1021,7 @@ export default function Home() {
                     sunset={daily.sunset[selectedDayIndex]}
                     selectedDate={selectedDate}
                     clock={clock}
+                    timezone={timezone}
                   />
                 )}
               </div>
@@ -1112,7 +1047,7 @@ export default function Home() {
                   <h2>7 Günlük Hava Tahmini</h2>
                 </div>
 
-                <span className="section-location">{selectedCity}</span>
+                <span className="section-location">{city.name}</span>
               </div>
 
               <p className="selection-hint">

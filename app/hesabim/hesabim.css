@@ -1,0 +1,71 @@
+.account-page {
+  min-height: calc(100vh - 80px);
+  padding: 46px 36px 70px;
+  background: #e9edf2;
+  color: #192b47;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.account-container { max-width: 640px; margin: 0 auto; }
+.account-header { margin-bottom: 34px; }
+.account-header h1 { margin: 0; font-size: clamp(30px, 4vw, 44px); letter-spacing: -1.4px; }
+.account-header > p:last-child { margin: 15px 0 0; color: #667b95; font-size: 14px; line-height: 1.8; }
+.account-panel {
+  padding: 30px;
+  border: 1px solid #ffffffd9;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #ffffffcc, #ffffff80);
+  box-shadow: inset 0 1px 0 #ffffffe6, 0 8px 28px #2840630a;
+}
+.account-page h2 { margin: 0 0 19px; font-size: 25px; letter-spacing: -0.7px; }
+.account-description { margin: 0 0 24px; color: #617795; font-size: 13px; line-height: 1.8; }
+.account-panel label:not(.account-checkbox) { display: block; margin: 22px 0 9px; font-size: 12px; color: #486381; font-weight: 600; }
+.account-panel input:not([type="checkbox"]), .account-panel select {
+  width: 100%; min-height: 49px; padding: 12px 15px; border: 1px solid #cbd6e5;
+  border-radius: 11px; background: #fff; color: #243f70; font: inherit; font-size: 14px;
+}
+.account-panel input:read-only { background: #edf2f8; color: #64758d; }
+.account-panel :is(input, select, button):focus-visible { outline: 2px solid #598ae6; outline-offset: 3px; }
+.account-code { font-size: 24px !important; letter-spacing: 9px; text-align: center; font-variant-numeric: tabular-nums; }
+.account-hint { margin: 11px 0 20px; color: #6b7e97; font-size: 11px; line-height: 1.8; }
+.account-button {
+  display: block; width: 100%; min-height: 48px; margin-top: 22px; padding: 14px 18px;
+  border: 1px solid transparent; border-radius: 11px; background: linear-gradient(120deg, #243f70, #527cb1);
+  color: #fff; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.account-button:hover { filter: brightness(1.07); }
+.account-panel button:disabled { opacity: 0.5; cursor: not-allowed; }
+.account-button-secondary { margin-top: 12px; border-color: #c4d3e5; background: #edf3fa; color: #294b7b; }
+.account-secondary-actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: 16px; }
+.account-secondary-actions button, .account-logout { padding: 5px 0; border: 0; background: transparent; color: #476e9e; font: inherit; font-size: 12px; cursor: pointer; }
+.account-identity { padding: 16px 18px; border: 1px solid #d4dfed; border-radius: 12px; background: #edf3fa; }
+.account-identity span { display: block; color: #617795; font-size: 11px; }
+.account-identity strong { display: block; margin-top: 8px; font-size: 14px; overflow-wrap: anywhere; }
+.account-checkbox { display: flex; align-items: flex-start; gap: 12px; margin-top: 24px; padding: 18px 15px; border: 1px solid #c9ddd5; border-radius: 12px; background: #edf6f1; cursor: pointer; }
+.account-checkbox input { width: 18px; height: 18px; flex-shrink: 0; margin: 1px 0; accent-color: #376b58; }
+.account-checkbox strong { display: block; color: #315f50; font-size: 12px; line-height: 1.6; }
+.account-checkbox small { display: block; margin-top: 5px; color: #5d7b70; font-size: 11px; line-height: 1.8; }
+.account-setup, .account-message, .account-error, .account-success { margin: 20px 0; padding: 15px 17px; border-radius: 11px; font-size: 12px; line-height: 1.8; }
+.account-setup { background: #fff3d8; color: #76561b; border: 1px solid #ecdbb8; }
+.account-setup p { margin: 7px 0 0; }
+.account-error { background: #fbe8e9; color: #9d3543; }
+.account-success { background: #e2f0e8; color: #315f50; }
+.account-message { background: #edf3fa; color: #617795; }
+
+html[data-theme="dark"] .account-panel { background: linear-gradient(135deg, #273b58, #1e2e46); border-color: #a0b9dc2e; box-shadow: inset 0 1px 0 #a0b9dc14; }
+html[data-theme="dark"] .account-panel input:not([type="checkbox"]),
+html[data-theme="dark"] .account-panel select { background: #182b43; border-color: #456080; color: #e6edf8; }
+html[data-theme="dark"] .account-identity, html[data-theme="dark"] .account-button-secondary { background: #263f5e; border-color: #456080; color: #d2e3f6; }
+html[data-theme="dark"] .account-identity span { color: #b7c8de; }
+html[data-theme="dark"] .account-checkbox { background: #243f3a; border-color: #496c5e; }
+html[data-theme="dark"] .account-checkbox strong { color: #c4e2d4; }
+html[data-theme="dark"] .account-checkbox small { color: #b3d1c3; }
+html[data-theme="dark"] .account-setup { background: #493c28; border-color: #766044; color: #f4ddb0; }
+html[data-theme="dark"] .account-error { background: #4b2e3c; color: #ffc0c6; }
+html[data-theme="dark"] .account-success { background: #284a40; color: #c4e6d5; }
+
+@media (max-width: 760px) { .account-page { padding: 35px 22px 50px; } }
+@media (max-width: 520px) {
+  .account-page { padding: 30px 16px 45px; }
+  .account-panel { padding: 23px 18px; }
+  .account-page h2 { font-size: 22px; }
+}

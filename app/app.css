@@ -2594,58 +2594,58 @@ html {
 
 /* KOYU TEMA */
 
-.weather-page.dark-theme {
+html[data-theme="dark"] .weather-page {
   background: #111c30;
   color: #e6edf8;
   min-height: 100vh;
 }
 
-.dark-theme .extra-card,
-.dark-theme .metric-card,
-.dark-theme .forecast-card,
-.dark-theme .hourly-card,
-.dark-theme .air-details {
+html[data-theme="dark"] .extra-card,
+html[data-theme="dark"] .metric-card,
+html[data-theme="dark"] .forecast-card,
+html[data-theme="dark"] .hourly-card,
+html[data-theme="dark"] .air-details {
   background: rgba(39, 56, 82, 0.9);
   border-color: rgba(160, 185, 220, 0.18);
   color: #e6edf8;
 }
 
-.dark-theme .extra-note,
-.dark-theme .eyebrow,
-.dark-theme .section-location,
-.dark-theme .page-description,
-.dark-theme .metric-heading,
-.dark-theme .metric-note,
-.dark-theme .forecast-description,
-.dark-theme .hourly-description,
-.dark-theme .hourly-feels-like,
-.dark-theme .sun-times span {
+html[data-theme="dark"] .extra-note,
+html[data-theme="dark"] .eyebrow,
+html[data-theme="dark"] .section-location,
+html[data-theme="dark"] .page-description,
+html[data-theme="dark"] .metric-heading,
+html[data-theme="dark"] .metric-note,
+html[data-theme="dark"] .forecast-description,
+html[data-theme="dark"] .hourly-description,
+html[data-theme="dark"] .hourly-feels-like,
+html[data-theme="dark"] .sun-times span {
   color: #b7c8de;
 }
 
-.dark-theme .brand,
-.dark-theme .forecast-link,
-.dark-theme .page-heading h1,
-.dark-theme .section-heading h2,
-.dark-theme .air-readings dd,
-.dark-theme .hourly-temperature,
-.dark-theme .forecast-temperatures strong {
+html[data-theme="dark"] .brand,
+html[data-theme="dark"] .forecast-link,
+html[data-theme="dark"] .page-heading h1,
+html[data-theme="dark"] .section-heading h2,
+html[data-theme="dark"] .air-readings dd,
+html[data-theme="dark"] .hourly-temperature,
+html[data-theme="dark"] .forecast-temperatures strong {
   color: #e6edf8;
 }
 
-.dark-theme .topbar,
-.dark-theme .page-footer {
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .page-footer {
   border-color: #354963;
 }
 
-.dark-theme .city-selector select,
-.dark-theme .theme-toggle {
+html[data-theme="dark"] .city-selector select,
+html[data-theme="dark"] .theme-toggle {
   background: #273b58;
   color: #ffffff;
   border-color: #456080;
 }
 
-.dark-theme .forecast-card.is-selected {
+html[data-theme="dark"] .forecast-card.is-selected {
   border-color: #85b5ef;
   background: rgba(61, 94, 139, 0.8);
 }
@@ -2739,97 +2739,157 @@ html {
 }
 
 
-/* Üst navigasyon menüsü */
-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 18px 24px;
-  background: #254674;
-}
-
-nav a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 11px 17px;
-  border-radius: 12px;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.4;
-  transition: background 0.2s ease;
-}
-
-nav a:hover {
-  background: rgba(255, 255, 255, 0.16);
-}
-
-nav a:focus-visible {
-  outline: 2px solid white;
-  outline-offset: 3px;
-}
-
-@media (max-width: 600px) {
-  nav {
-    gap: 6px;
-    padding: 12px;
-  }
-
-  nav a {
-    font-size: 13px;
-    padding: 9px 11px;
-  }
-}
-
-/* Modern meteoroloji navigasyonu */
-
+/* Sağdan açılan ana menü */
 .main-navbar {
-  width: 100%;
-  background: #243f70;
-  padding: 14px 20px;
-  box-sizing: border-box;
+  padding: 20px 36px 0;
+  background: #e9edf2;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .main-navbar .navbar-container {
-  max-width: 1250px;
-  margin: 0 auto;
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 8px 12px 8px 20px;
+  border: 1px solid #ffffffd9;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffffffc7, #ffffff59);
+  box-shadow: inset 0 1px 0 #ffffffe6, 0 6px 24px #2840630d;
+}
+
+.navbar-current { color: #29476f; font-size: 13px; font-weight: 600; }
+.navbar-actions { display: flex; align-items: center; gap: 10px; }
+.navbar-account { padding: 9px 12px; border-radius: 9px; background: #e2ebf8; color: #37557f; text-decoration: none; font-size: 12px; font-weight: 600; white-space: nowrap; }
+html[data-theme="dark"] .navbar-account { background: #304867; color: #d2e3f6; }
+.navbar-toggle {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.main-navbar .navbar-link {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 12px 15px;
+  gap: 10px;
+  min-height: 42px;
+  padding: 10px 14px;
+  border: 0;
   border-radius: 10px;
-  white-space: nowrap;
-  transition: background 0.2s ease;
+  background: transparent;
+  color: #37557f;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+.navbar-toggle svg { width: 20px; height: 20px; stroke-linecap: round; }
+.navbar-toggle:hover,
+.navbar-toggle[aria-expanded="true"] { background: #6496d61a; }
+
+.navbar-links {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  display: grid;
+  gap: 4px;
+  width: min(300px, 100%);
+  padding: 8px;
+  border: 1px solid #d1ddeb;
+  border-radius: 14px;
+  background: #f7faff;
+  box-shadow: 0 12px 32px #192b471f;
+}
+.navbar-links[hidden] { display: none; }
+.main-navbar .navbar-link {
+  display: block;
+  padding: 13px 15px;
+  border-radius: 9px;
+  color: #37557f;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.main-navbar .navbar-link:hover { background: #e6eef9; }
+.main-navbar .navbar-link.navbar-active { background: #dce8f7; color: #243f70; }
+.main-navbar :is(.navbar-link, .navbar-toggle):focus-visible { outline: 2px solid #598ae6; outline-offset: 2px; }
+
+html[data-theme="dark"] .main-navbar { background: #111c30; }
+html[data-theme="dark"] .navbar-container {
+  border-color: #a0b9dc2e;
+  background: linear-gradient(135deg, #273b58, #1e2e46);
+  box-shadow: inset 0 1px 0 #a0b9dc14, 0 6px 24px #0000001a;
+}
+html[data-theme="dark"] :is(.navbar-current, .navbar-toggle, .main-navbar .navbar-link) { color: #c2d4eb; }
+html[data-theme="dark"] .navbar-links { background: #1e2e46; border-color: #456080; }
+html[data-theme="dark"] .main-navbar .navbar-link:hover,
+html[data-theme="dark"] .main-navbar .navbar-link.navbar-active { background: #304867; color: #e6edf8; }
+
+@media (max-width: 760px) {
+  .main-navbar { padding: 16px 22px 0; }
+}
+@media (max-width: 520px) {
+  .main-navbar { padding: 12px 16px 0; }
+  .navbar-links { width: 100%; }
 }
 
-.main-navbar .navbar-link:hover {
-  background: rgba(255, 255, 255, 0.15);
+/* Günlük açık hava planı */
+.outdoor-plan {
+  margin: 28px 0 36px;
+  padding: 30px 32px 24px;
+  border: 1px solid #c7ddd6;
+  border-radius: 22px;
+  background: linear-gradient(125deg, #f3fbf7, #edf5fb);
+  box-shadow: inset 0 1px 0 #ffffffc9, 0 8px 28px #254e5108;
 }
 
-.main-navbar .navbar-link.navbar-active {
-  background: rgba(255, 255, 255, 0.22);
+.outdoor-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.outdoor-plan .eyebrow { color: #48766c; margin-bottom: 10px; }
+.outdoor-heading h2 { margin: 0; color: #203e47; font-size: clamp(20px, 2.5vw, 27px); letter-spacing: -0.6px; }
+.outdoor-location { margin: 10px 0 0; color: #5b7580; font-size: 12px; line-height: 1.6; }
+.outdoor-symbol {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 45px;
+  height: 45px;
+  border: 1px solid #c5dcd4;
+  border-radius: 14px;
+  background: #deeee7;
+  color: #376c59;
+  font-size: 26px;
 }
 
-@media (max-width: 768px) {
-  .main-navbar .navbar-container {
-    justify-content: flex-start;
-  }
+.outdoor-result { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 26px; }
+.outdoor-time { display: flex; align-items: center; gap: 14px; color: #234b48; font-size: clamp(30px, 4vw, 44px); font-weight: 700; letter-spacing: -1.4px; font-variant-numeric: tabular-nums; }
+.outdoor-time > span { color: #8aa8a1; font-weight: 400; }
+.outdoor-badge { padding: 7px 12px; border-radius: 20px; background: #d7eadf; color: #2e6148; font-size: 12px; font-weight: 700; }
+.outdoor-description { margin: 12px 0 22px; color: #556f76; font-size: 13px; line-height: 1.7; }
+.outdoor-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.outdoor-metrics > div { padding: 16px 18px; border: 1px solid #d7e4e3; border-radius: 13px; background: #ffffff85; }
+.outdoor-metrics dt { color: #607984; font-size: 11px; }
+.outdoor-metrics dd { margin: 10px 0 0; color: #29474f; font-size: 23px; font-weight: 700; }
+.outdoor-metrics small { font-size: 12px; font-weight: 400; }
+.outdoor-note { margin: 19px 0 0; color: #607780; font-size: 11px; line-height: 1.8; }
+.outdoor-empty { margin-top: 22px; padding: 18px 20px; border-radius: 12px; background: #ffffff70; }
+.outdoor-empty h3 { margin: 0 0 8px; color: #385561; font-size: 17px; }
+.outdoor-empty p { margin: 0; color: #607780; font-size: 13px; line-height: 1.8; }
 
-  .main-navbar .navbar-link {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
+html[data-theme="dark"] .outdoor-plan { background: linear-gradient(125deg, #203c3e, #20334c); border-color: #3a5c60; box-shadow: inset 0 1px 0 #a0badc0d; }
+html[data-theme="dark"] .outdoor-plan .eyebrow { color: #a0cbbd; }
+html[data-theme="dark"] .outdoor-time { color: #dbf3e9; }
+html[data-theme="dark"] .outdoor-symbol { background: #2b4d49; border-color: #45685e; color: #b9dfca; }
+html[data-theme="dark"] .outdoor-badge { background: #345e4f; color: #d5f2e0; }
+html[data-theme="dark"] .outdoor-metrics > div,
+html[data-theme="dark"] .outdoor-empty { background: #162c3e80; border-color: #416068; }
+html[data-theme="dark"] .outdoor-metrics dd { color: #e0edea; }
+
+@media (max-width: 760px) {
+  .outdoor-plan { padding: 24px; }
+  .outdoor-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 440px) {
+  .outdoor-plan { padding: 21px 18px; }
+  .outdoor-symbol { width: 35px; height: 35px; border-radius: 11px; font-size: 22px; }
+  .outdoor-metrics > div { padding: 13px; }
+  .outdoor-time { gap: 9px; }
 }

@@ -1,3 +1,4 @@
+import { getApiData } from "./api";
 
 export const cities = [
   { name: "İstanbul", lat: 41.01, lon: 28.98 },
@@ -17,8 +18,10 @@ export const cities = [
   { name: "Erzurum", lat: 39.91, lon: 41.27 },
 ] as const;
 
+// Şehir veri tipi
 export type City = (typeof cities)[number];
 
+// Hava durumu veri tipi
 export type Weather = {
   temperature: number;
   humidity: number;
@@ -27,6 +30,7 @@ export type Weather = {
   code: number;
 };
 
+// Hava kalitesi veri tipi
 export type AirQuality = {
   aqi: number | null;
   pm25: number | null;
@@ -35,59 +39,25 @@ export type AirQuality = {
   nitrogenDioxide: number | null;
 };
 
+// HAVA DURUMU - BACKEND
 export async function getWeather(city: City): Promise<Weather> {
-  const params = new URLSearchParams({
-    latitude: String(city.lat),
-    longitude: String(city.lon),
-    current:
-      "temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code",
-    timezone: "auto",
-  });
-
-  const response = await fetch(
-    `https://api.open-meteo.com/v1/forecast?${params}`
+  return getApiData<Weather>(
+    `/api/hava-durumu?city=${encodeURIComponent(city.name)}`,
+    "Hava durumu alınamadı."
   );
-
-  if (!response.ok) throw new Error("Hava durumu alınamadı.");
-
-  const data = await response.json();
-  const current = data.current;
-
-  return {
-    temperature: current.temperature_2m,
-    humidity: current.relative_humidity_2m,
-    apparent: current.apparent_temperature,
-    wind: current.wind_speed_10m,
-    code: current.weather_code,
-  };
 }
 
-export async function getAirQuality(city: City): Promise<AirQuality> {
-  const params = new URLSearchParams({
-    latitude: String(city.lat),
-    longitude: String(city.lon),
-    current: "european_aqi,pm2_5,pm10,ozone,nitrogen_dioxide",
-    timezone: "auto",
-  });
-
-  const response = await fetch(
-    `https://air-quality-api.open-meteo.com/v1/air-quality?${params}`
+// HAVA KALİTESİ - BACKEND
+export async function getAirQuality(
+  city: City
+): Promise<AirQuality> {
+  return getApiData<AirQuality>(
+    `/api/hava-kalitesi?city=${encodeURIComponent(city.name)}`,
+    "Hava kalitesi alınamadı."
   );
-
-  if (!response.ok) throw new Error("Hava kalitesi alınamadı.");
-
-  const data = await response.json();
-  const current = data.current;
-
-  return {
-    aqi: current.european_aqi ?? null,
-    pm25: current.pm2_5 ?? null,
-    pm10: current.pm10 ?? null,
-    ozone: current.ozone ?? null,
-    nitrogenDioxide: current.nitrogen_dioxide ?? null,
-  };
 }
 
+// Hava durumunu açıklama
 export function weatherDescription(code: number) {
   if (code === 0) return "Açık ☀️";
   if (code <= 3) return "Parçalı bulutlu ⛅";
@@ -97,9 +67,11 @@ export function weatherDescription(code: number) {
   if (code <= 82) return "Sağanak 🌧️";
   if (code <= 86) return "Kar yağışlı ❄️";
   if (code >= 95) return "Fırtınalı ⛈️";
+
   return "Değişken hava";
 }
 
+// Hava kalitesini açıklama
 export function aqiDescription(value: number | null) {
   if (value === null) return "Veri yok";
   if (value <= 20) return "İyi";
@@ -107,5 +79,6 @@ export function aqiDescription(value: number | null) {
   if (value <= 60) return "Orta";
   if (value <= 80) return "Kötü";
   if (value <= 100) return "Çok kötü";
+
   return "Son derece kötü";
 }

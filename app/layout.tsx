@@ -1,8 +1,11 @@
 
 import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
+import ThemeProvider from "./components/ThemeProvider";
+import { themeInitializationScript } from "./lib/theme";
 import "./globals.css";
 import "./app.css";
+import "./theme.css";
 
 export const metadata: Metadata = {
   title: "Meteoroloji | Türkiye Hava Durumu",
@@ -15,10 +18,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="tr">
+    <html lang="tr" data-theme="light" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitializationScript }} />
+      </head>
       <body>
-        <Navbar />
-        {children}
+        <ThemeProvider>
+          <Navbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

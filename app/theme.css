@@ -1,0 +1,215 @@
+/* Shared theme colors apply to every route and its dynamically opened controls. */
+html {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  background: #111c30;
+  color: #e6edf8;
+  --theme-text: #e6edf8;
+  --theme-muted: #b7c8de;
+  --theme-accent: #a5c9f3;
+  --theme-surface: #273852;
+  --theme-hover: #304867;
+  --theme-border: #456080;
+}
+
+html[data-theme="dark"] body,
+html[data-theme="dark"] main {
+  background: #111c30;
+  color: var(--theme-text);
+}
+
+html[data-theme="dark"] main :is(h1, h2, h3),
+html[data-theme="dark"] :is(
+  .harita-metric strong,
+  .kars-summary-item strong,
+  .air-metric-value,
+  .metric-card p,
+  .hourly-details dd
+) {
+  color: var(--theme-text);
+}
+
+html[data-theme="dark"] main :is(p, label, small, dt),
+html[data-theme="dark"] :is(
+  .topbar-note,
+  .metric-card p span,
+  .harita-eyebrow,
+  .harita-count,
+  .harita-map-bottom,
+  .harita-metric > span,
+  .harita-footer,
+  .harita-footer strong,
+  .kars-eyebrow,
+  .kars-card-label,
+  .kars-section-heading > span,
+  .kars-summary-item > span,
+  .kars-footer,
+  .kars-footer strong,
+  .fav-eyebrow,
+  .fav-small-label,
+  .fav-section-heading > span,
+  .fav-footer,
+  .fav-footer strong,
+  .air-eyebrow,
+  .air-small-label,
+  .air-section-heading > span,
+  .air-metric-top > span:first-child,
+  .air-info-grid span,
+  .air-footer,
+  .air-footer strong,
+  .rehber-eyebrow,
+  .rehber-section-heading > span,
+  .rehber-card-number,
+  .rehber-card-category,
+  .rehber-card-info > span,
+  .rehber-search-label,
+  .rehber-search-result span,
+  .rehber-faq-index,
+  .rehber-footer,
+  .rehber-footer strong
+) {
+  color: var(--theme-muted);
+}
+
+html[data-theme="dark"] :is(
+  .state-panel,
+  .harita-glass,
+  .harita-metric,
+  .kars-select-card,
+  .kars-summary-item,
+  .fav-add-card,
+  .fav-empty,
+  .air-selector-card,
+  .air-metric,
+  .air-info-card,
+  .air-info-grid > div,
+  .air-message,
+  .rehber-search-panel,
+  .rehber-card,
+  .rehber-empty,
+  .rehber-faq-item
+) {
+  background: var(--theme-surface);
+  border-color: rgba(160, 185, 220, 0.18);
+  color: var(--theme-text);
+  box-shadow: inset 0 1px 0 rgba(160, 185, 220, 0.07), 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="dark"] :is(
+  .harita-metric:hover,
+  .kars-summary-item:hover,
+  .air-metric:hover,
+  .rehber-card:hover,
+  .rehber-faq-item:hover,
+  .rehber-faq-open
+) {
+  background: var(--theme-hover);
+}
+
+html[data-theme="dark"] :is(
+  .harita-pin,
+  .kars-dropdown-button,
+  .kars-search-input,
+  .kars-select-card select,
+  .fav-dropdown-button,
+  .fav-search-input,
+  .air-dropdown-button,
+  .air-search-input,
+  .rehber-search-input,
+  .rehber-category-button:not(.rehber-active)
+) {
+  background: #273b58;
+  border-color: var(--theme-border);
+  color: var(--theme-text);
+}
+
+html[data-theme="dark"] .city-selector select {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] input::placeholder {
+  color: #a5b8d0;
+}
+
+html[data-theme="dark"] :is(
+  .kars-dropdown,
+  .fav-dropdown,
+  .air-dropdown,
+  .rehber-search-results
+) {
+  background: #1e2e46;
+  border-color: var(--theme-border);
+}
+
+html[data-theme="dark"] :is(
+  .kars-city-option,
+  .fav-city-option,
+  .air-city-option,
+  .rehber-search-result,
+  .rehber-faq-question
+) {
+  color: var(--theme-text);
+}
+
+html[data-theme="dark"] :is(
+  .harita-pin:hover,
+  .kars-city-option:hover,
+  .fav-city-option:hover,
+  .air-city-option:hover,
+  .rehber-search-result:hover,
+  .rehber-category-button:not(.rehber-active):hover
+) {
+  background: var(--theme-hover);
+}
+
+html[data-theme="dark"] .harita-pin-active {
+  background: #416b9d;
+  border-color: #85b5ef;
+}
+
+html[data-theme="dark"] .harita-map {
+  background: radial-gradient(ellipse at 30% 35%, rgba(114, 163, 213, 0.15), transparent 60%), #1e2e46;
+  border-color: var(--theme-border);
+}
+
+html[data-theme="dark"] .harita-map-label {
+  color: rgba(165, 201, 243, 0.12);
+}
+
+html[data-theme="dark"] :is(
+  .harita-map-bottom strong,
+  .fav-back a,
+  .rehber-back a,
+  .rehber-card-symbol,
+  .rehber-faq-toggle,
+  .air-details summary,
+  .hourly-details summary
+) {
+  color: var(--theme-accent);
+}
+
+html[data-theme="dark"] :is(
+  .harita-footer,
+  .kars-footer,
+  .fav-footer,
+  .air-footer,
+  .rehber-footer,
+  .rehber-card-info,
+  .rehber-faq-toggle,
+  .hourly-details,
+  .air-details[open] summary,
+  .air-readings > div + div
+) {
+  border-color: var(--theme-border);
+}
+
+html[data-theme="dark"] :is(.error-panel, .air-error, .kars-error) {
+  color: #ffb3bd;
+}
+
+html[data-theme="dark"] .kars-warning {
+  color: #f3cc8c;
+}
