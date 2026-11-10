@@ -23,7 +23,7 @@ type CurrentWeather = {
   wind_speed_10m: number;
   wind_direction_10m: number;
   surface_pressure: number | null;
-  precipitation: number;
+  precipitation: number | null;
   cloud_cover: number;
   weather_code: number;
   is_day: number;
