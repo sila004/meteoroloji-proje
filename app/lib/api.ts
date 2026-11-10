@@ -1,6 +1,6 @@
 // Yayında aynı sitedeki /api yolunu kullanır; Next.js bunu Intern API'ye iletir.
-const apiUrl = (process.env.NEXT_PUBLIC_API_URL ??
-  (process.env.NODE_ENV === "development" ? "http://localhost:5100" : "")).replace(/\/$/, "");
+const apiUrl = (process.env.NODE_ENV === "production" ? "" :
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5100").replace(/\/$/, "");
 export { apiUrl };
 
 type ApiResponse<T> = {

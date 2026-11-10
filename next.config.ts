@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
-const internalApiUrl = process.env.INTERNAL_API_URL?.trim().replace(/\/+$/, "");
+const backendUrl = process.env.INTERNAL_API_URL?.trim() ||
+  (process.env.NODE_ENV === "production" ? "https://hava-durumu-pgy5.onrender.com" : undefined);
+const internalApiUrl = backendUrl?.replace(/\/+$/, "");
 if (internalApiUrl) {
   const url = new URL(internalApiUrl);
   if (!["http:", "https:"].includes(url.protocol) || url.username || url.password ||
